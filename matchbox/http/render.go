@@ -2,6 +2,7 @@ package http
 
 import (
 	"encoding/json"
+	"github.com/Masterminds/sprig"
 	"io"
 	"net/http"
 	"text/template"
@@ -35,7 +36,7 @@ func (s *Server) writeJSON(w http.ResponseWriter, data []byte) {
 }
 
 func (s *Server) renderTemplate(w io.Writer, data interface{}, contents ...string) (err error) {
-	tmpl := template.New("").Option("missingkey=error")
+	tmpl := template.New("").Funcs(sprig.TxtFuncMap()).Option("missingkey=error")
 	for _, content := range contents {
 		tmpl, err = tmpl.Parse(content)
 		if err != nil {
